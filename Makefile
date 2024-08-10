@@ -1,16 +1,24 @@
-# 2024 Claudio Martino
+# (c) 2024 Claudio Martino
+
+COMPLEX_DIR = .
+TESTING_DIR = Testing
+EXAMPLE_DIR = Examples
+COMMON_DIR = Common
 
 CXXFLAGS = -std=c++20
 
-main: main.o
-	$(CXX) main.o -o $@
+test: test.o
+	$(CXX) test.o -o $@
 
-main.o: main.cpp complex.hpp
-	$(CXX) $(CXXFLAGS) -c main.cpp
+fft: fft.o
+	$(CXX) fft.o -o $@
 
-run:
-	./main
+test.o: $(TESTING_DIR)/test.cpp complex.hpp $(COMMON_DIR)/assert.hpp $(COMMON_DIR)/random.hpp
+	$(CXX) $(CXXFLAGS) -I$(COMPLEX_DIR) -I$(COMMON_DIR) -c $(TESTING_DIR)/test.cpp
+
+fft.o: $(EXAMPLE_DIR)/fft.cpp complex.hpp $(COMMON_DIR)/assert.hpp $(COMMON_DIR)/random.hpp
+	$(CXX) $(CXXFLAGS) -I$(COMPLEX_DIR) -I$(COMMON_DIR) -c $(EXAMPLE_DIR)/fft.cpp
 
 clean:
-	rm -f main.o
-	rm main
+	rm -f *.o
+	rm -f test fft

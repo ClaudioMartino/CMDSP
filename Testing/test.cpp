@@ -1,30 +1,6 @@
 #include "complex.hpp"
-
-#define ASSERT(test, expected, delta) { \
-  if(!((test - expected).abs() <= delta)){ \
-    std::cerr << "Assert failed: " << test << " (" << #test << ") != " << expected << " (" << #expected << ")" << std::endl; \
-  } \
-}
-
-template <typename T>
-auto get_delta(){
-  if constexpr (std::is_same_v<T, float>) return 1e-3;
-  else if constexpr (std::is_same_v<T, double>) return 1e-10;
-  else return 0; // perfect equality
-}
-
-template <typename T>
-T real_rand() {
-  // Generate a random value between 10 and 100
-  T r = 10 + static_cast<T>(rand()) / (static_cast<T>(RAND_MAX / 90));
-  return r;
-}
-
-template <typename T>
-Cpx<T> complex_rand() {
-  Cpx<T> c = { real_rand<T>(), real_rand<T>() };
-  return c;
-}
+#include "assert.hpp"
+#include "random.hpp"
 
 template <typename T>
 void run_tests(size_t tot) {
@@ -74,6 +50,9 @@ int main() {
 
   std::cout << "== Tests unsigned int ==" << std::endl;
   run_tests<unsigned int>(tot);
+
+  Cpx<float> c = {1,3};
+  printf("%f %f\n", c.abs(), abs(c));
 
   return 0;
 }
