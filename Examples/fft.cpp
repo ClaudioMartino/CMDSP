@@ -3,6 +3,9 @@
 #if defined(BENCH)
 #include <chrono>
 #endif
+#if defined(SAVE)
+#include <fstream>
+#endif
 
 #include "complex.hpp"
 #include "assert.hpp"
@@ -101,6 +104,14 @@ int main(int argc, char** argv) {
     x.push_back(c);
   }
 
+#if defined(SAVE)
+  std::ofstream input_file;
+  input_file.open ("Examples/input.txt");
+  for(const auto& x_i : x)
+    input_file << abs(x_i) << " ";
+  input_file.close();
+#endif
+
   // Run reference function
   std::vector<Cpx<double>> y_ref;
 #if defined(BENCH)
@@ -129,6 +140,14 @@ int main(int argc, char** argv) {
   double delta = get_delta<double>();
   for(size_t i=0; i<N; i++)
     ASSERT(y_ref[i], x[i], delta);
+
+#if defined(SAVE)
+  std::ofstream output_file;
+  output_file.open ("Examples/output.txt");
+  for(const auto& x_i : x)
+    output_file << abs(x_i) << " ";
+  output_file.close();
+#endif
 
   return 0;
 }
