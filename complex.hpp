@@ -1,7 +1,6 @@
 #include <cstdio>
 #include <cmath>
 #include <iostream>
-//#include <complex>
 
 template <typename T>
 struct Cpx {
@@ -89,3 +88,24 @@ struct Cpx {
     T r;
     T i;
 };
+
+// Non member functions
+template <typename T>
+T abs(Cpx<T> a) {
+  return a.abs();
+}
+
+template <typename T>
+T real(Cpx<T> a) {
+  return a.real();
+}
+
+template <typename T>
+T imag(Cpx<T> a) {
+  return a.imag();
+}
+
+template <typename T>
+T conj(Cpx<T> a) {
+  return a.conj();
+}
