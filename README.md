@@ -17,6 +17,8 @@ where `N` is the FFT size, it must be a power of 2 (default is 1024).
 * Add the `-DBENCH` flag to measure the execution time, too.
 * Add the `-DSAVE` flag to save the input and the output signal in `.txt` files. You can plot them using `plot.py`, you will need [matplotlib](https://matplotlib.org/).
 
+![FFT plots](Examples/figure_1.png)
+
 ## Test
 To run the test routines:
 ```

@@ -108,7 +108,7 @@ int main(int argc, char** argv) {
   std::ofstream input_file;
   input_file.open ("Examples/input.txt");
   for(const auto& x_i : x)
-    input_file << abs(x_i) << " ";
+    input_file << x_i << std::endl;
   input_file.close();
 #endif
 
@@ -121,19 +121,19 @@ int main(int argc, char** argv) {
 #if defined(BENCH)
   auto stop = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-  std::cout << duration.count() << std::endl;
+  std::cout << "DFT: " << duration.count() << "ms" << std::endl;
 #endif
 
   // Run FFT
 #if defined(BENCH)
   start = std::chrono::high_resolution_clock::now();
 #endif
-  radix2_fft<double>(x.data(), N);
-  bit_reverse_reorder(x, N);
+  radix2_fft<double>(x.data(), N); // in-place FFT
+  bit_reverse_reorder(x, N); // re-order output
 #if defined(BENCH)
   stop = std::chrono::high_resolution_clock::now();
   duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-  std::cout << duration.count() << std::endl;
+  std::cout << "FFT: " << duration.count() << "ms" << std::endl;
 #endif
 
   // Check result
@@ -145,7 +145,7 @@ int main(int argc, char** argv) {
   std::ofstream output_file;
   output_file.open ("Examples/output.txt");
   for(const auto& x_i : x)
-    output_file << abs(x_i) << " ";
+    output_file << x_i << std::endl;
   output_file.close();
 #endif
 
