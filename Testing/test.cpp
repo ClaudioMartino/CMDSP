@@ -22,6 +22,10 @@ void run_tests(size_t tot) {
     Cpx<T> div_1  = c1 / c2;
     Cpx<T> div_2  = c2 / c1;
 
+    T c1_real = c1.real();
+    T c1_imag = c1.imag();
+    Cpx<T> c1_conj = c1.conj();
+
     // Check results
     ASSERT((sum - c2), c1, delta);
     ASSERT((sum - c1), c2, delta);
@@ -33,6 +37,12 @@ void run_tests(size_t tot) {
       ASSERT((div_1 * c2), c1, delta);
       ASSERT((div_2 * c1), c2, delta);
     }
+
+    ASSERT_REAL(c1_real, real(c1), 0);
+    ASSERT_REAL(c1_imag, imag(c1), 0);
+    ASSERT(c1_conj, conj(c1), 0);
+    ASSERT_REAL(real(c1_conj), real(c1), 0);
+    ASSERT_REAL(imag(c1_conj), -imag(c1), 0);
   }
 }
 
@@ -50,9 +60,6 @@ int main() {
 
   std::cout << "== Tests unsigned int ==" << std::endl;
   run_tests<unsigned int>(tot);
-
-  Cpx<float> c = {1,3};
-  printf("%f %f\n", c.abs(), abs(c));
 
   return 0;
 }

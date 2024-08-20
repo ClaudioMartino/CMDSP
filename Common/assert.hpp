@@ -4,6 +4,13 @@
   } \
 }
 
+#define ASSERT_REAL(test, expected, delta) { \
+  if(!((test - expected) <= delta)){ \
+    std::cerr << "Assert failed: " << test << " (" << #test << ") != " << expected << " (" << #expected << ")" << std::endl; \
+  } \
+}
+
+
 template <typename T>
 auto get_delta(){
   if constexpr (std::is_same_v<T, float>) return 1e-3;

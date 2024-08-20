@@ -79,7 +79,7 @@ struct Cpx {
     return sqrt(r * r + i * i);
   }
 
-  T conj() const {
+  Cpx conj() const {
     return {r, -i};
   }
 
@@ -106,6 +106,6 @@ T imag(Cpx<T> a) {
 }
 
 template <typename T>
-T conj(Cpx<T> a) {
+Cpx<T> conj(Cpx<T> a) {
   return a.conj();
 }
