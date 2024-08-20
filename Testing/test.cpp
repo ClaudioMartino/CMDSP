@@ -25,6 +25,9 @@ void run_tests(size_t tot) {
     T c1_real = c1.real();
     T c1_imag = c1.imag();
     Cpx<T> c1_conj = c1.conj();
+    Cpx<T> c1_r90 = c1.rot90();
+    Cpx<T> c1_r180 = c1.rot180();
+    Cpx<T> c1_r270 = c1.rot270();
 
     // Check results
     ASSERT((sum - c2), c1, delta);
@@ -43,6 +46,18 @@ void run_tests(size_t tot) {
     ASSERT(c1_conj, conj(c1), 0);
     ASSERT_REAL(real(c1_conj), real(c1), 0);
     ASSERT_REAL(imag(c1_conj), -imag(c1), 0);
+    ASSERT(c1_r90, rot90(c1), 0);
+    ASSERT_REAL(real(c1_r90), -imag(c1), 0);
+    ASSERT_REAL(imag(c1_r90), real(c1), 0);
+    ASSERT(c1_r180, rot180(c1), 0);
+    ASSERT_REAL(real(c1_r180), -real(c1), 0);
+    ASSERT_REAL(imag(c1_r180), -imag(c1), 0);
+    ASSERT(c1_r90.rot90(), c1_r180, 0);
+    ASSERT(c1_r270, rot270(c1), 0);
+    ASSERT_REAL(real(c1_r270), imag(c1), 0);
+    ASSERT_REAL(imag(c1_r270), -real(c1), 0);
+    ASSERT(c1_r180.rot90(), c1_r270, 0);
+    ASSERT(c1_r90.rot180(), c1_r270, 0);
   }
 }
 

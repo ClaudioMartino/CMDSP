@@ -83,6 +83,18 @@ struct Cpx {
     return {r, -i};
   }
 
+  Cpx rot90() const {
+    return{-i, r};
+  }
+
+  Cpx rot180() const {
+    return{-r, -i};
+  }
+
+  Cpx rot270() const {
+    return{i, -r};
+  }
+
   // Attributes
   private:
     T r;
@@ -108,4 +120,19 @@ T imag(Cpx<T> a) {
 template <typename T>
 Cpx<T> conj(Cpx<T> a) {
   return a.conj();
+}
+
+template <typename T>
+Cpx<T> rot90(Cpx<T> a) {
+  return a.rot90();
+}
+
+template <typename T>
+Cpx<T> rot180(Cpx<T> a) {
+  return a.rot180();
+}
+
+template <typename T>
+Cpx<T> rot270(Cpx<T> a) {
+  return a.rot270();
 }
