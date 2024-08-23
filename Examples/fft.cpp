@@ -78,10 +78,21 @@ struct Bfly4 : Bfly<T> {
     size_t idx2 = idx0 + 2*step;
     size_t idx3 = idx0 + 3*step;
 
-    Cpx<T> out0 = data[idx0] + data[idx1] + data[idx2] + data[idx3];
-    Cpx<T> out1 = data[idx0] - data[idx1].rot90() - data[idx2] + data[idx3].rot90();
-    Cpx<T> out2 = data[idx0] - data[idx1] + data[idx2] - data[idx3];
-    Cpx<T> out3 = data[idx0] + data[idx1].rot90() - data[idx2] - data[idx3].rot90();
+    //Cpx<T> out0 = data[idx0] + data[idx1] + data[idx2] + data[idx3];
+    //Cpx<T> out1 = data[idx0] - data[idx1].rot90() - data[idx2] + data[idx3].rot90();
+    //Cpx<T> out2 = data[idx0] - data[idx1] + data[idx2] - data[idx3];
+    //Cpx<T> out3 = data[idx0] + data[idx1].rot90() - data[idx2] - data[idx3].rot90();
+
+    // Compute intermediate values to help the compiler
+    Cpx<T> sum02 = data[idx0] + data[idx2];
+    Cpx<T> sum13 = data[idx1] + data[idx3];
+    Cpx<T> dff02 = data[idx0] - data[idx2];
+    Cpx<T> dff13 = data[idx1] - data[idx3];
+
+    Cpx<T> out0 = sum02 + sum13;
+    Cpx<T> out1 = dff02 - dff13.rot90();
+    Cpx<T> out2 = sum02 - sum13;
+    Cpx<T> out3 = dff02 + dff13.rot90();
  
     data[idx0] = out0;
     data[idx1] = out1;
