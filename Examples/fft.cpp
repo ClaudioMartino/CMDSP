@@ -22,22 +22,29 @@ Cpx<T> get_twiddle(size_t N, double kn) {
 }
 
 template <typename T>
-void ref_dft(const std::vector<Cpx<T>> x, std::vector<Cpx<T>>& y, const size_t N) {
-  // X[k] = sum_n x[n] W_N^(kn)
-  for(size_t k=0; k<N; k++) {
-    Cpx<T> y_k = {0, 0};
-    for(size_t n=0; n<N; n++) {
-      Cpx<T> w_kn = get_twiddle<T>(N, k*n);
-      y_k += x[n] * w_kn;
-    }
-    y.push_back(y_k);
-  }
-}
-
-template <typename T>
 struct Bfly {
+  Bfly() = default;
+
+  Bfly(size_t r) : size { r } { };
+
   virtual ~Bfly() = default;
-  virtual void run(Cpx<T>* data, size_t idx0, size_t step) = 0;
+
+  virtual void run(Cpx<T>* data, size_t idx0, size_t step) {
+    std::vector<Cpx<T>> out_v;
+    for(size_t r=0; r<size; r++) {
+      Cpx<T> out = data[idx0];
+      for(size_t rr=1; rr<size; rr++) {
+        out += get_twiddle<T>(size, r * rr) * data[idx0 + rr*step];
+      }
+      out_v.push_back(out);
+    }
+    for(size_t r=0; r<size; r++) {
+      data[idx0 + r*step] = out_v[r];
+    }
+  };
+
+  private:
+    size_t size = 0;
 };
 
 template <typename T>
@@ -177,14 +184,17 @@ struct Bfly8 : Bfly<T> {
 
 template <typename T>
 std::unique_ptr<Bfly<T>> get_butterfly(size_t size) {
-  if(size == 4) {
+  if(size == 2) {
+    return std::unique_ptr<Bfly2<T>>(new Bfly2<T>);
+  }
+  else if(size == 4) {
     return std::unique_ptr<Bfly4<T>>(new Bfly4<T>);
   }
   else if(size == 8) {
     return std::unique_ptr<Bfly8<T>>(new Bfly8<T>);
   }
-  else { // default: radix-2
-    return std::unique_ptr<Bfly2<T>>(new Bfly2<T>);
+  else {
+    return std::unique_ptr<Bfly<T>>(new Bfly<T>(size));
   }
 }
 
@@ -242,7 +252,6 @@ void reverse_reorder(std::vector<Cpx<T>>& x, size_t N, size_t r) {
 }
 
 int main(int argc, char** argv) {
-
   // Input signal
   size_t N = 1024;
   if(argc >= 2)
@@ -271,11 +280,12 @@ int main(int argc, char** argv) {
   std::cout << "Running " << N << "-point radix-" << r << " FFT." << std::endl;
 
   // Run reference function
-  std::vector<Cpx<double>> y_ref;
+  Bfly<double> dft(N); // radix-N butterfly = N-point DFT
+  std::vector<Cpx<double>> y_ref = x;
 #if defined(BENCH)
   auto start = std::chrono::high_resolution_clock::now();
 #endif
-  ref_dft<double>(x, y_ref, N);
+  dft.run(y_ref.data(), 0, 1);
 #if defined(BENCH)
   auto stop = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
@@ -286,7 +296,7 @@ int main(int argc, char** argv) {
 #if defined(BENCH)
   start = std::chrono::high_resolution_clock::now();
 #endif
-  fft<double>(x.data(), N, r); // in-place FFT
+  fft<double>(x.data(), N, r);
   reverse_reorder(x, N, r); // re-order output
 #if defined(BENCH)
   stop = std::chrono::high_resolution_clock::now();
