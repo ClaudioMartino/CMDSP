@@ -279,9 +279,19 @@ int main(int argc, char** argv) {
   // Print message to user
   std::cout << "Running " << N << "-point radix-" << r << " FFT." << std::endl;
 
+  std::vector<Cpx<double>> y_ref;
+  std::vector<Cpx<double>> y;
+
+#if defined(BENCH)
+  size_t total_rep = 99;
+  std::vector<int> dur_dft;
+  std::vector<int> dur_fft;
+  for(size_t rep=0; rep<total_rep; rep++) {
+#endif
+
   // Run reference function
+  y_ref = x;
   Bfly<double> dft(N); // radix-N butterfly = N-point DFT
-  std::vector<Cpx<double>> y_ref = x;
 #if defined(BENCH)
   auto start = std::chrono::high_resolution_clock::now();
 #endif
@@ -289,31 +299,42 @@ int main(int argc, char** argv) {
 #if defined(BENCH)
   auto stop = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-  std::cout << "DFT: " << duration.count() << " us" << std::endl;
+  dur_dft.push_back(duration.count());
 #endif
 
   // Run FFT
+  y = x;
 #if defined(BENCH)
   start = std::chrono::high_resolution_clock::now();
 #endif
-  fft<double>(x.data(), N, r);
-  reverse_reorder(x, N, r); // re-order output
+  fft<double>(y.data(), N, r);
+  reverse_reorder(y, N, r); // re-order output
 #if defined(BENCH)
   stop = std::chrono::high_resolution_clock::now();
   duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-  std::cout << "FFT: " << duration.count() << " us" << std::endl;
+  dur_fft.push_back(duration.count());
+#endif
+
+#if defined(BENCH)
+  }
+
+// Take medians
+std::sort(dur_dft.begin(), dur_dft.end()); 
+std::cout << dur_dft[total_rep/2-1] << std::endl;
+std::sort(dur_fft.begin(), dur_fft.end()); 
+std::cout << dur_fft[total_rep/2-1] << std::endl;
 #endif
 
   // Check result
   double delta = get_delta<double>();
   for(size_t i=0; i<N; i++)
-    ASSERT(y_ref[i], x[i], delta);
+    ASSERT(y_ref[i], y[i], delta);
 
 #if defined(SAVE)
   std::ofstream output_file;
   output_file.open ("Examples/output.txt");
-  for(const auto& x_i : x)
-    output_file << x_i << std::endl;
+  for(const auto& y_i : y)
+    output_file << y_i << std::endl;
   output_file.close();
 #endif
 
