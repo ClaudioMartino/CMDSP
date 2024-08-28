@@ -1,11 +1,8 @@
+#include <getopt.h>
 #include <vector>
 #include <cmath>
-#if defined(BENCH)
 #include <chrono>
-#endif
-#if defined(SAVE)
 #include <fstream>
-#endif
 
 #include "complex.hpp"
 #include "assert.hpp"
@@ -252,91 +249,118 @@ void reverse_reorder(std::vector<Cpx<T>>& x, size_t N, size_t r) {
 }
 
 int main(int argc, char** argv) {
-  // Input signal
-  size_t N = 1024;
-  if(argc >= 2)
-    N = atoi(argv[1]);
 
+  // Default values
+  size_t N = 1024;
+  size_t r = 2;
+  bool save = false;
+  bool bench = false;
+  size_t total_rep = 1;
+
+  // Read options
+  for(;;) {
+    switch(getopt(argc, argv, "n:r:sbh")) {
+      case 'n':
+        N = atoi(optarg);
+        continue;
+      case 'r':
+        r = atoi(optarg);
+        continue;
+      case 's':
+        save = true;
+        continue;
+      case 'b':
+        bench = true;
+        total_rep = 99;
+        continue;
+      case 'h':
+      default :
+        printf("Usage: fft [-n FFT-size] [-r radix] [-s] [-b]\n");
+        return 0;
+        break;
+      case -1:
+        break;
+    }
+    break;
+  }
+
+  std::cout << "Running " << N << "-point radix-" << r << " FFT";
+  if(bench)
+    std::cout << " " << total_rep << " times";
+  std::cout << "." << std::endl;
+
+  // Input signal
   std::vector<Cpx<double>> x;
   for(size_t n=0; n<N; n++) {
     Cpx<double> c = complex_rand<double>();
     x.push_back(c);
   }
 
-#if defined(SAVE)
-  std::ofstream input_file;
-  input_file.open ("Examples/input.txt");
-  for(const auto& x_i : x)
-    input_file << x_i << std::endl;
-  input_file.close();
-#endif
-
-  // Radix size
-  size_t r = 2;
-  if(argc >= 3)
-    r = atoi(argv[2]);
-
-  // Print message to user
-  std::cout << "Running " << N << "-point radix-" << r << " FFT." << std::endl;
+  if(save) {
+    std::ofstream input_file;
+    input_file.open ("Examples/input.txt");
+    for(const auto& x_i : x)
+      input_file << x_i << std::endl;
+    input_file.close();
+    std::cout << "Input signal saved to file." << std::endl;
+  }
 
   std::vector<Cpx<double>> y_ref;
   std::vector<Cpx<double>> y;
 
-#if defined(BENCH)
-  size_t total_rep = 99;
+  std::chrono::time_point<std::chrono::high_resolution_clock> start;
+  std::chrono::time_point<std::chrono::high_resolution_clock> stop;
+  std::chrono::microseconds duration;
   std::vector<int> dur_dft;
   std::vector<int> dur_fft;
+
   for(size_t rep=0; rep<total_rep; rep++) {
-#endif
-
-  // Run reference function
-  y_ref = x;
-  Bfly<double> dft(N); // radix-N butterfly = N-point DFT
-#if defined(BENCH)
-  auto start = std::chrono::high_resolution_clock::now();
-#endif
-  dft.run(y_ref.data(), 0, 1);
-#if defined(BENCH)
-  auto stop = std::chrono::high_resolution_clock::now();
-  auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-  dur_dft.push_back(duration.count());
-#endif
-
-  // Run FFT
-  y = x;
-#if defined(BENCH)
-  start = std::chrono::high_resolution_clock::now();
-#endif
-  fft<double>(y.data(), N, r);
-  reverse_reorder(y, N, r); // re-order output
-#if defined(BENCH)
-  stop = std::chrono::high_resolution_clock::now();
-  duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-  dur_fft.push_back(duration.count());
-#endif
-
-#if defined(BENCH)
+    // Run reference function
+    y_ref = x;
+    Bfly<double> dft(N); // radix-N butterfly = N-point DFT
+    if(bench)
+      start = std::chrono::high_resolution_clock::now();
+    dft.run(y_ref.data(), 0, 1);
+    if(bench) {
+      stop = std::chrono::high_resolution_clock::now();
+      duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+      dur_dft.push_back(duration.count());
+    }
+  
+    // Run FFT
+    y = x;
+    if(bench)
+      start = std::chrono::high_resolution_clock::now();
+    fft<double>(y.data(), N, r);
+    reverse_reorder(y, N, r); // re-order output
+    if(bench) {
+      stop = std::chrono::high_resolution_clock::now();
+      duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+      dur_fft.push_back(duration.count());
+    }
   }
 
-// Take medians
-std::sort(dur_dft.begin(), dur_dft.end()); 
-std::cout << dur_dft[total_rep/2-1] << std::endl;
-std::sort(dur_fft.begin(), dur_fft.end()); 
-std::cout << dur_fft[total_rep/2-1] << std::endl;
-#endif
+  // Take medians
+  if(bench) {
+    std::sort(dur_dft.begin(), dur_dft.end()); 
+    std::cout << "DFT: " << dur_dft[total_rep/2-1] << " us." << std::endl;
+    std::sort(dur_fft.begin(), dur_fft.end()); 
+    std::cout << "FFT: " << dur_fft[total_rep/2-1] << " us." << std::endl;
+  }
 
   // Check result
   double delta = get_delta<double>();
   for(size_t i=0; i<N; i++)
     ASSERT(y_ref[i], y[i], delta);
 
-#if defined(SAVE)
-  std::ofstream output_file;
-  output_file.open ("Examples/output.txt");
-  for(const auto& y_i : y)
-    output_file << y_i << std::endl;
-  output_file.close();
-#endif
+  if(save) {
+    std::ofstream output_file;
+    output_file.open ("Examples/output.txt");
+    for(const auto& y_i : y)
+      output_file << y_i << std::endl;
+    output_file.close();
+    std::cout << "Output signal saved to file." << std::endl;
+  }
 
   std::cout << "Done." << std::endl;
 

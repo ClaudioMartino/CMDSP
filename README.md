@@ -17,15 +17,15 @@ make test
 The FFT has been implemented. To build and run it:
 ```
 make fft
-./fft N R
+./fft -n N -r R
 ```
 where `N` is the FFT size (default is 1024) and R is the radix size (default is 2). N must be a power of R.
 
-* Add the `-DSAVE` flag to save the input and the output signal in `.txt` files. You can plot them using `plot.py`, you will need [matplotlib](https://matplotlib.org/).
+* Add the `-s` option to save the input and the output signal in `.txt` files. You can plot them using `plot.py`, you will need [matplotlib](https://matplotlib.org/).
 
 ![FFT plots](Examples/fft_example.png)
 
-* Add the `-DBENCH` flag to measure the execution time with the [chrono library](https://en.cppreference.com/w/cpp/chrono). The FFTs are run 99 times and the medians are taken. The measurements on the Apple M1 are the following:
+* Add the `-b` option to measure the execution time with the [chrono library](https://en.cppreference.com/w/cpp/chrono). The FFTs are run 99 times and the medians are taken. The measurements on the Apple M1 are the following:
 
 ![FFT benchmarks](Examples/fft_bench.png)
 
