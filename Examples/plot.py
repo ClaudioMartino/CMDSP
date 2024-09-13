@@ -30,7 +30,7 @@ sample_freq = 1
 
 if len(sys.argv) >= 2:
     sample_freq = int(sys.argv[1])
-print(sample_freq)
+print("Sampling freq.: " + str(sample_freq))
 
 # Read signals from files (assumption: one sample per second)
 x_file = open("input.txt", "r")

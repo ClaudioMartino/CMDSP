@@ -48,16 +48,15 @@ int main(int argc, char** argv) {
 
   if(read_from_file) {
     // Open .wav file
-    printf("Opening .wav file %s.\n", filename);
+    printf("Opening .wav file.\n");
 
-    FILE *ptr;
-    ptr = fopen(filename, "rb");
+    FILE *ptr = fopen(filename, "rb");
     if (ptr == NULL) {
-     printf("Error opening .wav file.\n");
+     printf("Error opening %s.\n", filename);
      exit(1);
     }
    
-    struct wav_header header;
+    WavHeader header;
     read_wav_header(ptr, header, false);
     if (header.audio_format != 1) { // PCM only
       printf("Only PCM is supported.\n");
@@ -80,8 +79,7 @@ int main(int argc, char** argv) {
   else {
     // Random input
     for(size_t n=0; n<N; n++) {
-      Cpx<double> c = complex_rand<double>();
-      x[n] = c;
+      x[n] = complex_rand<double>();
     }
   }
 
