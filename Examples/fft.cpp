@@ -59,34 +59,34 @@ int main(int argc, char** argv) {
   std::vector<Cpx<double>> x(N);
 
   if(read_from_file) {
-    // Open .wav file
-    printf("Opening .wav file.\n");
+    // Read .wav file
+    std::ifstream fs(filename, std::ios::binary);
+    if(fs.is_open()) {
+      WavHeader header;
 
-    FILE *ptr = fopen(filename, "rb");
-    if (ptr == NULL) {
-     printf("Error opening %s.\n", filename);
-     exit(1);
+      // Read header
+      read_wav_header(fs, header, 1);
+      if (header.audio_format != 1) { // PCM only
+        std::cout << "Only PCM is supported." << std::endl;
+        exit(1);
+      }
+
+      // Compute signal size
+      long num_samples, size_of_each_sample;
+      compute_wave_sample_sizes(header, num_samples, size_of_each_sample, 1);
+      if(N > num_samples) {
+        std::cout << "N must be smaller than the number of samples in the file ";
+        std::cout << "(N = " << N << ", samples = " << num_samples << ")" << std::endl;
+        exit(1);
+      }
+
+      // Read signal
+      read_pcm_wav_data(fs, header, N, size_of_each_sample, x);
     }
-   
-    WavHeader header;
-    read_wav_header(ptr, header, 1);
-    if (header.audio_format != 1) { // PCM only
-      printf("Only PCM is supported.\n");
-      fclose(ptr);
+    else {
+      std::cout << "Cannot open " << filename << std::endl;
       exit(1);
     }
-
-    long num_samples, size_of_each_sample;
-    compute_wave_sample_sizes(ptr, header, num_samples, size_of_each_sample);
-    if(N > num_samples) {
-      printf("N must be smaller than the number of samples in the file (N=%zu, samples=%li).\n", N, num_samples);
-      fclose(ptr);
-      exit(1);
-    }
-
-    read_pcm_wav_data(ptr, header, N, size_of_each_sample, x);
-
-    fclose(ptr);
   }
   else {
     // Random input
@@ -137,6 +137,7 @@ int main(int argc, char** argv) {
 
     if(bench) {
       stop = std::chrono::high_resolution_clock::now();
+
       duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
       dur_fft.push_back(duration.count());
     }
