@@ -28,6 +28,7 @@ void run_tests(size_t tot) {
     Cpx<T> c1_r90 = c1.rot90();
     Cpx<T> c1_r180 = c1.rot180();
     Cpx<T> c1_r270 = c1.rot270();
+    T abs = c1.abs();
 
     // Check results
     ASSERT((sum - c2), c1, delta);
@@ -58,6 +59,8 @@ void run_tests(size_t tot) {
     ASSERT_REAL(imag(c1_r270), -real(c1), 0);
     ASSERT(c1_r180.rot90(), c1_r270, 0);
     ASSERT(c1_r90.rot180(), c1_r270, 0);
+
+    ASSERT_REAL(abs, sqrt(c1.real() * c1.real() + c1.imag() * c1.imag()), 0);
   }
 }
 

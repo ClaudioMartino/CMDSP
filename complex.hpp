@@ -75,8 +75,12 @@ struct Cpx {
     return i;
   }
 
+  T abs_sq() const {
+    return (r * r + i * i);
+  }
+
   T abs() const {
-    return sqrt(r * r + i * i);
+    return sqrt(this->abs_sq());
   }
 
   Cpx conj() const {
@@ -103,11 +107,6 @@ struct Cpx {
 
 // Non member functions
 template <typename T>
-T abs(Cpx<T> a) {
-  return a.abs();
-}
-
-template <typename T>
 T real(Cpx<T> a) {
   return a.real();
 }
@@ -115,6 +114,16 @@ T real(Cpx<T> a) {
 template <typename T>
 T imag(Cpx<T> a) {
   return a.imag();
+}
+
+template <typename T>
+T abs_sq(Cpx<T> a) {
+  return a.abs_sq();
+}
+
+template <typename T>
+T abs(Cpx<T> a) {
+  return a.abs();
 }
 
 template <typename T>
