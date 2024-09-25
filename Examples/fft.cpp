@@ -9,7 +9,7 @@ int main(int argc, char** argv) {
   bool bench = false;
   size_t total_rep = 1;
   bool read_from_file = false;
-  char * filename = nullptr;
+  char* filename = nullptr;
   bool window = false;
 
   // Read options
@@ -51,7 +51,7 @@ int main(int argc, char** argv) {
   while (pow < N)
     pow *= r;
   if (pow != N) {
-    printf("N = %zu is not a power of r = %zu.\n", N, r);
+    std::cout << "N = " << N << " is not a power of r = " << r << std::endl;
     exit(1);
   }
 
@@ -82,6 +82,7 @@ int main(int argc, char** argv) {
 
       // Read signal
       read_pcm_wav_data(fs, header, N, size_of_each_sample, x);
+      fs.close();
     }
     else {
       std::cout << "Cannot open " << filename << std::endl;

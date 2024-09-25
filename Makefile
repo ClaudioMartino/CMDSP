@@ -33,4 +33,4 @@ test_fft.o: $(EXAMPLE_DIR)/test_fft.cpp $(EXAMPLE_DIR)/fft.cpp complex.hpp $(EXA
 
 clean:
 	rm -f *.o
-	rm -f test fft
+	rm -f test fft test_fft
