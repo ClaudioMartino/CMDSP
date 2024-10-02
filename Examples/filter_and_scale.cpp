@@ -137,7 +137,7 @@ int main(int argc, char** argv) {
 
   // Save filtered fft signal
   std::ofstream output_file;
-  output_file.open ("Examples/output.txt");
+  output_file.open ("Examples/freq.txt");
   for(const auto& inv_i : inv)
     output_file << inv_i << std::endl;
   output_file.close();
@@ -155,7 +155,7 @@ int main(int argc, char** argv) {
  
   // Save inverse signal
   std::ofstream input_file;
-  input_file.open ("Examples/input.txt");
+  input_file.open ("Examples/time.txt");
   for(const auto& inv_i : inv)
     input_file << inv_i << std::endl;
   input_file.close();

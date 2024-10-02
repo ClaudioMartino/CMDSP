@@ -91,7 +91,7 @@ int main(int argc, char** argv) {
   if(save) {
     // Save input signal to file
     std::ofstream input_file;
-    input_file.open ("Examples/input.txt");
+    input_file.open ("Examples/time.txt");
     for(const auto& x_i : x)
       input_file << x_i << std::endl;
     input_file.close();
@@ -136,7 +136,7 @@ int main(int argc, char** argv) {
   if(save) {
     // Save output signal
     std::ofstream output_file;
-    output_file.open ("Examples/output.txt");
+    output_file.open ("Examples/freq.txt");
     for(const auto& y_i : y)
       output_file << y_i << std::endl;
     output_file.close();

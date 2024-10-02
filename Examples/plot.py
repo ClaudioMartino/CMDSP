@@ -32,12 +32,12 @@ if len(sys.argv) >= 2:
     sample_freq = int(sys.argv[1])
 print("Sampling freq.: " + str(sample_freq))
 
-# Read signals from files (assumption: one sample per second)
-x_file = open("input.txt", "r")
+# Read signals from files
+x_file = open("time.txt", "r")
 x = x_file.readlines()
 x_r, x_i, x_abs = conv(x)
 
-y_file = open("output.txt", "r")
+y_file = open("freq.txt", "r")
 y = y_file.readlines()
 y = cyclic_shift(y)
 y_r, y_i, y_abs = conv(y)
