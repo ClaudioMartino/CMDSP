@@ -231,17 +231,45 @@ void write_pcm_wav_data(std::ofstream& fs, WavHeader& header, long num_samples, 
     // Convert data from big endian to little endian
     switch(bytes_in_each_channel) {
       case 4:
-// TODO
+        // TODO
+        printf("TODO\n");
+        exit(1);
         break;
       case 2:
         data_buffer[0] = (char)(data     );
         data_buffer[1] = (char)(data >> 8);
         break;
       case 1:
-// TODO
+        // TODO
+        printf("TODO\n");
+        exit(1);
         break;
     }
 
     fs.write(data_buffer, sizeof(data_buffer));
   }
+}
+
+void signal_from_wav_file(std::ifstream& fs, WavHeader& header, std::vector<Cpx<double>>& x) {
+  // Read header
+  read_wav_header(fs, header, 1);
+
+  if (header.audio_format != 1) { // PCM only
+    std::cout << "Only PCM is supported." << std::endl;
+    exit(1);
+  }
+
+  // Compute signal size
+  long num_samples, size_of_each_sample;
+  compute_wave_sample_sizes(header, num_samples, size_of_each_sample, 1);
+
+  size_t N = x.size();
+  if(N > num_samples) {
+    std::cout << "N must be smaller than the number of samples in the file ";
+    std::cout << "(N = " << N << ", samples = " << num_samples << ")" << std::endl;
+    exit(1);
+  }
+
+  // Read signal
+  read_pcm_wav_data(fs, header, N, size_of_each_sample, x);
 }

@@ -50,6 +50,7 @@ int main(int argc, char** argv) {
   size_t pow = 1;
   while (pow < N)
     pow *= r;
+
   if (pow != N) {
     std::cout << "N = " << N << " is not a power of r = " << r << std::endl;
     exit(1);
@@ -63,25 +64,7 @@ int main(int argc, char** argv) {
     std::ifstream fs(filename, std::ios::binary);
     if(fs.is_open()) {
       WavHeader header;
-
-      // Read header
-      read_wav_header(fs, header, 1);
-      if (header.audio_format != 1) { // PCM only
-        std::cout << "Only PCM is supported." << std::endl;
-        exit(1);
-      }
-
-      // Compute signal size
-      long num_samples, size_of_each_sample;
-      compute_wave_sample_sizes(header, num_samples, size_of_each_sample, 1);
-      if(N > num_samples) {
-        std::cout << "N must be smaller than the number of samples in the file ";
-        std::cout << "(N = " << N << ", samples = " << num_samples << ")" << std::endl;
-        exit(1);
-      }
-
-      // Read signal
-      read_pcm_wav_data(fs, header, N, size_of_each_sample, x);
+      signal_from_wav_file(fs, header, x);
       fs.close();
     }
     else {
@@ -100,7 +83,7 @@ int main(int argc, char** argv) {
     // Hann window
     double a0 = 0.5;
     for(size_t n=0; n<N; n++) {
-      double hann_n = a0 - (1 - a0) * cos(2*PI*n/N);
+      double hann_n = a0 - (1 - a0) * cos(2 * PI * n / N);
       x[n] *= hann_n;
     }
   }
@@ -120,7 +103,7 @@ int main(int argc, char** argv) {
     std::cout << " " << total_rep << " times";
   std::cout << "." << std::endl;
 
-  std::vector<Cpx<double>> y;
+  std::vector<Cpx<double>> y(N);
 
   std::chrono::time_point<std::chrono::high_resolution_clock> start;
   std::chrono::time_point<std::chrono::high_resolution_clock> stop;
