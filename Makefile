@@ -8,7 +8,6 @@ COMMON_DIR = Common
 CXXFLAGS = -std=c++20
 
 
-
 test: test.o
 	$(CXX) test.o -o $@
 
@@ -18,6 +17,8 @@ fft: fft.o
 test_fft: test_fft.o
 	$(CXX) test_fft.o -o $@
 
+filter: filter_and_scale.o
+	$(CXX) filter_and_scale.o -o $@
 
 
 test.o: $(TESTING_DIR)/test.cpp complex.hpp $(COMMON_DIR)/assert.hpp $(COMMON_DIR)/random.hpp
@@ -29,8 +30,10 @@ fft.o: $(EXAMPLE_DIR)/fft.cpp complex.hpp $(EXAMPLE_DIR)/fft.hpp $(EXAMPLE_DIR)/
 test_fft.o: $(EXAMPLE_DIR)/test_fft.cpp $(EXAMPLE_DIR)/fft.cpp complex.hpp $(EXAMPLE_DIR)/fft.hpp $(COMMON_DIR)/assert.hpp $(COMMON_DIR)/random.hpp
 	$(CXX) $(CXXFLAGS) -I$(COMPLEX_DIR) -I$(COMMON_DIR) -c $(EXAMPLE_DIR)/test_fft.cpp
 
+filter_and_scale.o: $(EXAMPLE_DIR)/filter_and_scale.cpp complex.hpp $(EXAMPLE_DIR)/fft.hpp $(EXAMPLE_DIR)/wav.hpp $(COMMON_DIR)/assert.hpp $(COMMON_DIR)/random.hpp
+	$(CXX) $(CXXFLAGS) -I$(COMPLEX_DIR) -I$(COMMON_DIR) -c $(EXAMPLE_DIR)/filter_and_scale.cpp
 
 
 clean:
 	rm -f *.o
-	rm -f test fft test_fft
+	rm -f test fft test_fft filter
