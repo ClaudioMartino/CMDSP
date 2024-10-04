@@ -10,7 +10,7 @@ def cyclic_shift(y):
 
   return y_2 + y_1
 
-def conv(x):
+def convert(x):
   x_r   = [0] * len(x)
   x_i   = [0] * len(x)
   x_abs = [0] * len(x)
@@ -20,27 +20,27 @@ def conv(x):
     tmp = tmp.split(' + i') # split re and im
     x_r[i] = float(tmp[0])
     x_i[i] = float(tmp[1])
-    x_abs[i] = round(math.sqrt(x_r[i] * x_r[i] + x_i[i] * x_i[i]), 5)
   
-  return x_r, x_i, x_abs
+  return x_r, x_i
 
 # MAIN
 
-sample_freq = 1
+cur_dir = '/'.join((__file__.split('/'))[0:-1])
 
+sample_freq = 1
 if len(sys.argv) >= 2:
-    sample_freq = int(sys.argv[1])
+  sample_freq = int(sys.argv[1])
 print("Sampling freq.: " + str(sample_freq))
 
 # Read signals from files
-x_file = open("time.txt", "r")
+x_file = open(cur_dir + "/time.txt", "r")
 x = x_file.readlines()
-x_r, x_i, x_abs = conv(x)
+x_r, x_i = convert(x)
 
-y_file = open("freq.txt", "r")
+y_file = open(cur_dir + "/freq.txt", "r")
 y = y_file.readlines()
 y = cyclic_shift(y)
-y_r, y_i, y_abs = conv(y)
+y_r, y_i = convert(y)
 
 # Define x axis
 samples = range(len(x))
@@ -54,14 +54,22 @@ for t in range(len(time) // 2):
   freq[-t -1 + len(time) // 2] = -f
 
 # Plot
-fig, axs = plt.subplots(1,2)
+fig, axs = plt.subplots(2,2)
 
-axs[0].plot(time, x_abs)
-axs[0].set_title('abs(x[n])')
-axs[0].set(xlabel='s')
+axs[0][0].plot(time, x_r)
+axs[0][0].set_title('Re(x[n])')
+axs[0][0].set(xlabel='s')
 
-axs[1].plot(freq, y_abs)
-axs[1].set_title('abs(y[n])')
-axs[1].set(xlabel='Hz')
+axs[0][1].plot(time, x_i)
+axs[0][1].set_title('Im(x[n])')
+axs[0][1].set(xlabel='s')
+
+axs[1][0].plot(freq, y_r)
+axs[1][0].set_title('Re(y[n])')
+axs[1][0].set(xlabel='Hz')
+
+axs[1][1].plot(freq, y_i)
+axs[1][1].set_title('Im(y[n])')
+axs[1][1].set(xlabel='Hz')
 
 plt.show()
