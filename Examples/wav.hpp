@@ -270,7 +270,7 @@ void write_pcm_wav_data(std::ofstream& fs, WavHeader& header, long num_samples, 
   }
 }
 
-void signal_from_wav_file(std::ifstream& fs, WavHeader& header, std::vector<Cpx<double>>& x) {
+void signal_from_wav_file(std::ifstream& fs, WavHeader& header, std::vector<Cpx<double>>& x, bool all) {
   // Read header
   read_wav_header(fs, header, false);
 
@@ -282,14 +282,24 @@ void signal_from_wav_file(std::ifstream& fs, WavHeader& header, std::vector<Cpx<
   // Compute signal size
   long num_samples, size_of_each_sample;
   compute_wave_sample_sizes(header, num_samples, size_of_each_sample, true);
-
-  size_t N = x.size();
-  if(N > num_samples) {
-    std::cout << "N must be smaller than the number of samples in the file ";
-    std::cout << "(N = " << N << ", samples = " << num_samples << ")" << std::endl;
-    exit(1);
+ 
+  if(all) {
+    x.resize(num_samples);
+  
+    // Read signal
+    read_pcm_wav_data(fs, header, num_samples, size_of_each_sample, x);
+  }
+  else {
+ 
+    size_t N = x.size();
+    if(N > num_samples) {
+      std::cout << "N must be smaller than the number of samples in the file ";
+      std::cout << "(N = " << N << ", samples = " << num_samples << ")" << std::endl;
+      exit(1);
+    }
+  
+    // Read signal
+    read_pcm_wav_data(fs, header, N, size_of_each_sample, x);
   }
 
-  // Read signal
-  read_pcm_wav_data(fs, header, N, size_of_each_sample, x);
 }

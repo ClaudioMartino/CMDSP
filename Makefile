@@ -23,6 +23,9 @@ filter: filter_and_scale.o
 modulation: modulation.o
 	$(CXX) modulation.o -o $@
 
+spectrogram: spectrogram.o
+	$(CXX) spectrogram.o -o $@
+
 
 test.o: $(TES_DIR)/test.cpp complex.hpp $(COM_DIR)/assert.hpp $(COM_DIR)/random.hpp
 	$(CXX) $(CXXFLAGS) -I$(CPX_DIR) -I$(COM_DIR) -c $(TES_DIR)/test.cpp
@@ -42,7 +45,10 @@ modulation.o: $(EXA_DIR)/modulation.cpp complex.hpp $(EXA_DIR)/fft.hpp $(EXA_DIR
 window.o: $(EXA_DIR)/window.cpp complex.hpp $(EXA_DIR)/window.hpp $(COM_DIR)/constants.hpp
 	$(CXX) $(CXXFLAGS) -I$(CPX_DIR) -I$(COM_DIR) -c $(EXA_DIR)/window.cpp
 
+spectrogram.o: $(EXA_DIR)/spectrogram.cpp complex.hpp $(COM_DIR)/constants.hpp
+	$(CXX) $(CXXFLAGS) -I$(CPX_DIR) -I$(COM_DIR) -c $(EXA_DIR)/spectrogram.cpp
+
 
 clean:
 	rm -f *.o
-	rm -f test fft test_fft filter modulation window
+	rm -f test fft test_fft filter modulation window spectrogram
