@@ -7,8 +7,7 @@
 #include "complex.hpp"
 #include "assert.hpp"
 #include "random.hpp"
-
-#define PI 3.14159265358979323846
+#include "constants.hpp"
 
 template <typename T>
 Cpx<T> get_twiddle(size_t N, double kn) {
