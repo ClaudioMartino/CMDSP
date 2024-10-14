@@ -1,5 +1,6 @@
 #include "fft.hpp"
 #include "wav.hpp"
+#include "window.hpp"
 
 int main(int argc, char** argv) {
   // Default values
@@ -81,11 +82,7 @@ int main(int argc, char** argv) {
 
   if(window) {
     // Hann window
-    double a0 = 0.5;
-    for(size_t n=0; n<N; n++) {
-      double hann_n = a0 - (1 - a0) * cos(2 * PI * n / N);
-      x[n] *= hann_n;
-    }
+    hann_window(x);
   }
 
   if(save) {

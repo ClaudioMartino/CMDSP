@@ -1,9 +1,9 @@
 # (c) 2024 Claudio Martino
 
-COMPLEX_DIR = .
-TESTING_DIR = Testing
-EXAMPLE_DIR = Examples
-COMMON_DIR = Common
+CPX_DIR = .
+TES_DIR = Testing
+EXA_DIR = Examples
+COM_DIR = Common
 
 CXXFLAGS = -std=c++20
 
@@ -11,8 +11,8 @@ CXXFLAGS = -std=c++20
 test: test.o
 	$(CXX) test.o -o $@
 
-fft: fft.o
-	$(CXX) fft.o -o $@
+fft: fft.o window.o
+	$(CXX) fft.o window.o -o $@
 
 test_fft: test_fft.o
 	$(CXX) test_fft.o -o $@
@@ -24,22 +24,25 @@ modulation: modulation.o
 	$(CXX) modulation.o -o $@
 
 
-test.o: $(TESTING_DIR)/test.cpp complex.hpp $(COMMON_DIR)/assert.hpp $(COMMON_DIR)/random.hpp
-	$(CXX) $(CXXFLAGS) -I$(COMPLEX_DIR) -I$(COMMON_DIR) -c $(TESTING_DIR)/test.cpp
+test.o: $(TES_DIR)/test.cpp complex.hpp $(COM_DIR)/assert.hpp $(COM_DIR)/random.hpp
+	$(CXX) $(CXXFLAGS) -I$(CPX_DIR) -I$(COM_DIR) -c $(TES_DIR)/test.cpp
 
-fft.o: $(EXAMPLE_DIR)/fft.cpp complex.hpp $(EXAMPLE_DIR)/fft.hpp $(EXAMPLE_DIR)/wav.hpp $(COMMON_DIR)/assert.hpp $(COMMON_DIR)/random.hpp
-	$(CXX) $(CXXFLAGS) -I$(COMPLEX_DIR) -I$(COMMON_DIR) -c $(EXAMPLE_DIR)/fft.cpp
+fft.o: $(EXA_DIR)/fft.cpp complex.hpp $(EXA_DIR)/fft.hpp $(EXA_DIR)/wav.hpp $(EXA_DIR)/window.hpp $(COM_DIR)/assert.hpp $(COM_DIR)/random.hpp $(COM_DIR)/constants.hpp
+	$(CXX) $(CXXFLAGS) -I$(CPX_DIR) -I$(COM_DIR) -c $(EXA_DIR)/fft.cpp
 
-test_fft.o: $(EXAMPLE_DIR)/test_fft.cpp $(EXAMPLE_DIR)/fft.cpp complex.hpp $(EXAMPLE_DIR)/fft.hpp $(COMMON_DIR)/assert.hpp $(COMMON_DIR)/random.hpp
-	$(CXX) $(CXXFLAGS) -I$(COMPLEX_DIR) -I$(COMMON_DIR) -c $(EXAMPLE_DIR)/test_fft.cpp
+test_fft.o: $(EXA_DIR)/test_fft.cpp $(EXA_DIR)/fft.cpp complex.hpp $(EXA_DIR)/fft.hpp $(COM_DIR)/assert.hpp $(COM_DIR)/random.hpp
+	$(CXX) $(CXXFLAGS) -I$(CPX_DIR) -I$(COM_DIR) -c $(EXA_DIR)/test_fft.cpp
 
-filter_and_scale.o: $(EXAMPLE_DIR)/filter_and_scale.cpp complex.hpp $(EXAMPLE_DIR)/fft.hpp $(EXAMPLE_DIR)/wav.hpp
-	$(CXX) $(CXXFLAGS) -I$(COMPLEX_DIR) -I$(COMMON_DIR) -c $(EXAMPLE_DIR)/filter_and_scale.cpp
+filter_and_scale.o: $(EXA_DIR)/filter_and_scale.cpp complex.hpp $(EXA_DIR)/fft.hpp $(EXA_DIR)/wav.hpp
+	$(CXX) $(CXXFLAGS) -I$(CPX_DIR) -I$(COM_DIR) -c $(EXA_DIR)/filter_and_scale.cpp
 
-modulation.o: $(EXAMPLE_DIR)/modulation.cpp complex.hpp $(EXAMPLE_DIR)/fft.hpp $(EXAMPLE_DIR)/wav.hpp
-	$(CXX) $(CXXFLAGS) -I$(COMPLEX_DIR) -I$(COMMON_DIR) -c $(EXAMPLE_DIR)/modulation.cpp
+modulation.o: $(EXA_DIR)/modulation.cpp complex.hpp $(EXA_DIR)/fft.hpp $(EXA_DIR)/wav.hpp $(COM_DIR)/constants.hpp
+	$(CXX) $(CXXFLAGS) -I$(CPX_DIR) -I$(COM_DIR) -c $(EXA_DIR)/modulation.cpp
+
+window.o: $(EXA_DIR)/window.cpp complex.hpp $(EXA_DIR)/window.hpp $(COM_DIR)/constants.hpp
+	$(CXX) $(CXXFLAGS) -I$(CPX_DIR) -I$(COM_DIR) -c $(EXA_DIR)/window.cpp
 
 
 clean:
 	rm -f *.o
-	rm -f test fft test_fft filter modulation
+	rm -f test fft test_fft filter modulation window

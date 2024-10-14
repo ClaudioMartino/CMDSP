@@ -1,3 +1,6 @@
+#ifndef COMPLEX_H
+#define COMPLEX_H
+
 #include <cstdio>
 #include <cmath>
 #include <iostream>
@@ -145,3 +148,5 @@ template <typename T>
 Cpx<T> rot270(Cpx<T> a) {
   return a.rot270();
 }
+
+#endif
