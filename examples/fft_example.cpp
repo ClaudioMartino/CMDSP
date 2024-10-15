@@ -38,7 +38,7 @@ int main(int argc, char** argv) {
         continue;
       case 'h':
       default :
-        printf("Usage: fft [-n FFT-size] [-r radix-size] [-f file.wav] [-w] [-s] [-b]\n");
+        printf("Usage: fft_example [-n FFT-size] [-r radix-size] [-f file.wav] [-w] [-s] [-b]\n");
         return 0;
         break;
       case -1:
@@ -65,7 +65,7 @@ int main(int argc, char** argv) {
     std::ifstream fs(filename, std::ios::binary);
     if(fs.is_open()) {
       WavHeader header;
-      signal_from_wav_file(fs, header, x, false);
+      signal_from_wav_file<Cpx<double>(fs, header, x, false);
       fs.close();
     }
     else {
@@ -82,7 +82,7 @@ int main(int argc, char** argv) {
 
   if(window) {
     // Hann window
-    hann_window(x);
+    hann_window<Cpx<double>>(x);
   }
 
   if(save) {

@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
 
       case 'h':
       default :
-        printf("Usage: modulation -f file.wav -m mod-freq [-n FFT-size] [-c carrier]\n");
+        printf("Usage: modulation_example -f file.wav -m mod-freq [-n FFT-size] [-c carrier]\n");
         return 0;
         break;
       case -1:
@@ -72,7 +72,7 @@ int main(int argc, char** argv) {
   WavHeader header;
   std::ifstream fs(filename, std::ios::binary);
   if(fs.is_open()) {
-    signal_from_wav_file(fs, header, x, false);
+    signal_from_wav_file<Cpx<double>>(fs, header, x, false);
     fs.close();
   }
   else {
@@ -101,7 +101,7 @@ int main(int argc, char** argv) {
   std::ofstream fso("modulated.wav", std::ios::binary);
   write_wav_header(fso, header);
   long size_of_each_sample = (header.num_channels * header.bits_per_sample) / 8;
-  write_pcm_wav_data(fso, header, N, size_of_each_sample, x);
+  write_pcm_wav_data<double>(fso, header, N, size_of_each_sample, x);
   fso.close();
 
   // Save time signal

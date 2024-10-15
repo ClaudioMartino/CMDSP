@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
         continue;
       case 'h':
       default :
-        printf("Usage: spectrogram -f file.wav [-n FFT-size]\n");
+        printf("Usage: spectrogram_example -f file.wav [-n FFT-size]\n");
         return 0;
         break;
       case -1:
@@ -44,7 +44,7 @@ int main(int argc, char** argv) {
   std::ifstream fs(filename, std::ios::binary);
   if(fs.is_open()) {
     WavHeader header;
-    signal_from_wav_file(fs, header, x, true);
+    signal_from_wav_file<Cpx<double>>(fs, header, x, true);
     fs.close();
   }
   else {

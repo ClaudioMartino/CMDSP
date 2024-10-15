@@ -41,7 +41,7 @@ int main(int argc, char** argv) {
         continue;
 
       default :
-        printf("Usage: filter -f file.wav [-n FFT-size] [-l low-freq] [-h high-freq] [-s]\n");
+        printf("Usage: filter_example -f file.wav [-n FFT-size] [-l low-freq] [-h high-freq] [-s]\n");
         return 0;
         break;
       case -1:
@@ -75,7 +75,7 @@ int main(int argc, char** argv) {
   WavHeader header;
   std::ifstream fs(filename, std::ios::binary);
   if(fs.is_open()) {
-    signal_from_wav_file(fs, header, x, false);
+    signal_from_wav_file<Cpx<double>>(fs, header, x, false);
     fs.close();
   }
   else {
@@ -135,7 +135,7 @@ int main(int argc, char** argv) {
     inv = y;
   }
 
-  // Save filtered fft signal
+  // Save filtered FFT signal
   std::ofstream output_file;
   output_file.open ("tools/freq.txt");
   for(const auto& inv_i : inv)
@@ -145,12 +145,15 @@ int main(int argc, char** argv) {
   // Run inverse FFT
   fft<double>(inv.data(), N, r, true);
   reverse_reorder(inv, N, r);
- 
+
   // Save .wav file
+  std::vector<double> real_inv(N);
+  for(size_t i=0; i<N; i++)
+    real_inv[i] = real(inv[i]);
   std::ofstream fso("filtered.wav", std::ios::binary);
   write_wav_header(fso, header);
   long size_of_each_sample = (header.num_channels * header.bits_per_sample) / 8;
-  write_pcm_wav_data(fso, header, N, size_of_each_sample, inv);
+  write_pcm_wav_data<double>(fso, header, N, size_of_each_sample, real_inv);
   fso.close();
  
   // Save inverse signal
