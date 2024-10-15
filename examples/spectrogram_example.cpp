@@ -55,7 +55,7 @@ int main(int argc, char** argv) {
   std::cout << "Running " << N << "-point radix-" << r << " FFT";
 
   std::ofstream output_file;
-  output_file.open ("Examples/spectrogram.txt");
+  output_file.open ("tools/spectrogram.txt");
 
   // Run FFT on different frames
   for(size_t i=0; i<x.size() / N ; i++) {

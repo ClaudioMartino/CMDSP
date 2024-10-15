@@ -106,7 +106,7 @@ int main(int argc, char** argv) {
 
   // Save time signal
   std::ofstream input_file;
-  input_file.open ("Examples/time.txt");
+  input_file.open ("tools/time.txt");
   for(const auto& x_i : x)
     input_file << x_i << std::endl;
   input_file.close();
@@ -119,7 +119,7 @@ int main(int argc, char** argv) {
 
   // Save fft signal
   std::ofstream output_file;
-  output_file.open ("Examples/freq.txt");
+  output_file.open ("tools/freq.txt");
   for(const auto& y_i : y)
     output_file << y_i << std::endl;
   output_file.close();

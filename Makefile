@@ -1,23 +1,24 @@
 # (c) 2024 Claudio Martino
 
-INC_DIR = Include
-TES_DIR = Testing
-EXA_DIR = Examples
+SRC_DIR = src
+INC_DIR = inc
+TES_DIR = test
+EXA_DIR = examples
 
 CXXFLAGS = -std=c++20
 
+# Linker
+fft_example: fft_example.o wav.o window.o
+	$(CXX) fft_example.o wav.o window.o -o $@
 
-fft_example: fft_example.o window.o
-	$(CXX) fft_example.o window.o -o $@
+filter_example: filter_example.o wav.o
+	$(CXX) filter_example.o wav.o -o $@
 
-filter_example: filter_example.o
-	$(CXX) filter_example.o -o $@
+modulation_example: modulation_example.o wav.o
+	$(CXX) modulation_example.o wav.o -o $@
 
-modulation_example: modulation_example.o
-	$(CXX) modulation_example.o -o $@
-
-spectrogram_example: spectrogram_example.o
-	$(CXX) spectrogram_example.o -o $@
+spectrogram_example: spectrogram_example.o wav.o
+	$(CXX) spectrogram_example.o wav.o -o $@
 
 test_complex: test_complex.o
 	$(CXX) test_complex.o -o $@
@@ -25,10 +26,14 @@ test_complex: test_complex.o
 test_fft: test_fft.o
 	$(CXX) test_fft.o -o $@
 
+# Sources
+window.o: $(SRC_DIR)/window.cpp $(INC_DIR)/complex.hpp $(INC_DIR)/window.hpp $(INC_DIR)/constants.hpp
+	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $(SRC_DIR)/window.cpp
 
-window.o: $(EXA_DIR)/window.cpp $(INC_DIR)/complex.hpp $(INC_DIR)/window.hpp $(INC_DIR)/constants.hpp
-	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $(EXA_DIR)/window.cpp
+wav.o: $(SRC_DIR)/wav.cpp $(INC_DIR)/wav.hpp
+	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $(SRC_DIR)/wav.cpp
 
+# Examples
 fft_example.o: $(EXA_DIR)/fft_example.cpp $(INC_DIR)/complex.hpp $(INC_DIR)/fft.hpp $(INC_DIR)/wav.hpp $(INC_DIR)/window.hpp $(INC_DIR)/assert.hpp $(INC_DIR)/random.hpp $(INC_DIR)/constants.hpp
 	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $(EXA_DIR)/fft_example.cpp
 
@@ -41,10 +46,11 @@ modulation_example.o: $(EXA_DIR)/modulation_example.cpp $(INC_DIR)/complex.hpp $
 spectrogram_example.o: $(EXA_DIR)/spectrogram_example.cpp $(INC_DIR)/complex.hpp $(INC_DIR)/constants.hpp
 	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $(EXA_DIR)/spectrogram_example.cpp
 
+# Tests
 test_complex.o: $(TES_DIR)/test_complex.cpp $(INC_DIR)/complex.hpp $(INC_DIR)/assert.hpp $(INC_DIR)/random.hpp
 	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $(TES_DIR)/test_complex.cpp
 
-test_fft.o: $(TES_DIR)/test_fft.cpp $(EXA_DIR)/fft.cpp $(INC_DIR)/complex.hpp $(INC_DIR)/fft.hpp $(INC_DIR)/assert.hpp $(INC_DIR)/random.hpp
+test_fft.o: $(TES_DIR)/test_fft.cpp $(INC_DIR)/complex.hpp $(INC_DIR)/fft.hpp $(INC_DIR)/assert.hpp $(INC_DIR)/random.hpp
 	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $(TES_DIR)/test_fft.cpp
 
 
