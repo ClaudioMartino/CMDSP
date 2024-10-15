@@ -40,7 +40,8 @@ make modulation
 ```
 The default FFT size is 1024 (the radix size is 2). Only PCM-modulated audios with 1 channel are supported.
 * Define the modulation frequency with the `-m` option.
-* Define the carrier type with the `-c` option. `exp` and `cos` are accepted.
+* Define the carrier type with the `-c` option, `exp` and `cos` are accepted.
+
 The final signal is saved in `.txt` files. You can plot it using `plot.py`.
 
 ### Spectrogram

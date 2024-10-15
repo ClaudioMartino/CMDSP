@@ -44,10 +44,11 @@ spectrogram.o: $(EXA_DIR)/spectrogram.cpp $(INC_DIR)/complex.hpp $(INC_DIR)/cons
 test.o: $(TES_DIR)/test.cpp $(INC_DIR)/complex.hpp $(INC_DIR)/assert.hpp $(INC_DIR)/random.hpp
 	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $(TES_DIR)/test.cpp
 
-test_fft.o: $(EXA_DIR)/test_fft.cpp $(EXA_DIR)/fft.cpp $(INC_DIR)/complex.hpp $(INC_DIR)/fft.hpp $(INC_DIR)/assert.hpp $(INC_DIR)/random.hpp
-	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $(EXA_DIR)/test_fft.cpp
+test_fft.o: $(TES_DIR)/test_fft.cpp $(EXA_DIR)/fft.cpp $(INC_DIR)/complex.hpp $(INC_DIR)/fft.hpp $(INC_DIR)/assert.hpp $(INC_DIR)/random.hpp
+	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $(TES_DIR)/test_fft.cpp
 
 
 clean:
 	rm -f *.o
-	rm -f test fft test_fft filter modulation window spectrogram
+	rm -f fft window filter modulation spectrogram
+	rm -f test test_fft
