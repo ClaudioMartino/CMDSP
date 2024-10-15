@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
         continue;
       case 'h':
       default :
-        printf("Usage: fft [-n FFT-size] -f file.wav\n");
+        printf("Usage: spectrogram -f file.wav [-n FFT-size]\n");
         return 0;
         break;
       case -1:

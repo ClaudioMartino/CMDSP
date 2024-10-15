@@ -72,7 +72,7 @@ int main(int argc, char** argv) {
   WavHeader header;
   std::ifstream fs(filename, std::ios::binary);
   if(fs.is_open()) {
-    signal_from_wav_file(fs, header, x);
+    signal_from_wav_file(fs, header, x, false);
     fs.close();
   }
   else {
