@@ -15,9 +15,9 @@ The default FFT size is 1024 and the default radix size is 2. The FFT size must 
 * Add the `-b` option to measure the execution time with the [chrono library](https://en.cppreference.com/w/cpp/chrono). The FFTs are run 99 times and the medians are taken. The measurements on the Apple M1 are the following:
 ![FFT benchmarks](Docs/fft_bench.png)
 
-You can plot the signal saved in the `.txt` files using `plot.py`. You will need [matplotlib](https://matplotlib.org/).
+You can plot the signal saved in the `.txt` files using the Python3 script `plot.py`. You will need [matplotlib](https://matplotlib.org/).
 ```
-python3 plot.py [sample_freq]
+./plot.py [sample_freq]
 ```
 ![FFT plots](Docs/fft_example.png)
 
@@ -52,7 +52,7 @@ make spectrogram
 ```
 The result, a time-frequency matrix, is saved to the `spectrogram.txt` file. It can be plotted (transposed) with:
 ```
-python3 spectrogram.py [-fs sample-frequency] [-t1 time1] [-t2 time2] [-f1 freq1] [-f2 freq2] [-i interpolation] [-nt time-ticks] [-nf freq-ticks]
+./spectrogram.py [-fs sample-frequency] [-t1 time1] [-t2 time2] [-f1 freq1] [-f2 freq2] [-i interpolation] [-nt time-ticks] [-nf freq-ticks]
 ```
 * Define the sampling frequency with the `-fs` option.
 * Define the time interval to show with the `-t1` and `-t2` options.

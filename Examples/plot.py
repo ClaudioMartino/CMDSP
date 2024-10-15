@@ -1,4 +1,6 @@
-#usage python3 plot.py [sample_freq]
+#!/usr/bin/env python3
+
+#usage plot.py [sample_freq]
 
 import matplotlib.pyplot as plt
 import math 
