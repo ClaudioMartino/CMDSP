@@ -5,8 +5,8 @@ CM-DSP is a digital signal processing library written in C++.
 ### FFT
 The FFT has been implemented. To build and run it:
 ```
-make fft
-./fft [-n FFT-size] [-r radix-size] [-f file.wav] [-w] [-s] [-b]
+make fft_example
+./fft_example [-n FFT-size] [-r radix-size] [-f file.wav] [-w] [-s] [-b]
 ```
 The default FFT size is 1024 and the default radix size is 2. The FFT size must be a power of the radix size.
 * Add the `-w` option to smooth the input signal with a Hann window.
@@ -24,8 +24,8 @@ You can plot the signal saved in the `.txt` files using the Python3 script `plot
 ### Filter
 A band-pass filter has been implemented. To build and run it:
 ```
-make filter
-./filter -f file.wav [-n FFT-size] [-l low-freq] [-h high-freq] [-s]
+make filter_example
+./filter_example -f file.wav [-n FFT-size] [-l low-freq] [-h high-freq] [-s]
 ```
 The default FFT size is 1024 (the radix size is 2). Only PCM-modulated audios with 1 channel are supported.
 * Define the lower cutoff frequency with the `-l` option.
@@ -35,8 +35,8 @@ The default FFT size is 1024 (the radix size is 2). Only PCM-modulated audios wi
 ### Modulation
 A modulation example has been implemented. To build and run it:
 ```
-make modulation
-./modulation -f file.wav -m mod-freq [-n FFT-size] [-c carrier]
+make modulation_example
+./modulation_example -f file.wav -m mod-freq [-n FFT-size] [-c carrier]
 ```
 The default FFT size is 1024 (the radix size is 2). Only PCM-modulated audios with 1 channel are supported.
 * Define the modulation frequency with the `-m` option.
@@ -47,8 +47,8 @@ The final signal is saved in `.txt` files. You can plot it using `plot.py`.
 ### Spectrogram
 A spectrogram has been implemented. To build and run it:
 ```
-make spectrogram
-./spectrogram -f file.wav [-n FFT-size]
+make spectrogram_example
+./spectrogram_example -f file.wav [-n FFT-size]
 ```
 The result, a time-frequency matrix, is saved to the `spectrogram.txt` file. It can be plotted (transposed) with:
 ```
@@ -65,8 +65,8 @@ The result, a time-frequency matrix, is saved to the `spectrogram.txt` file. It 
 ### Complex
 To run the complex test routines:
 ```
-make test
-./test
+make test_complex
+./test_complex
 ```
 
 ### FFT

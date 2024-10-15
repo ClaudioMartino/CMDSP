@@ -7,42 +7,42 @@ EXA_DIR = Examples
 CXXFLAGS = -std=c++20
 
 
-fft: fft.o window.o
-	$(CXX) fft.o window.o -o $@
+fft_example: fft_example.o window.o
+	$(CXX) fft_example.o window.o -o $@
 
-filter: filter_and_scale.o
-	$(CXX) filter_and_scale.o -o $@
+filter_example: filter_example.o
+	$(CXX) filter_example.o -o $@
 
-modulation: modulation.o
-	$(CXX) modulation.o -o $@
+modulation_example: modulation_example.o
+	$(CXX) modulation_example.o -o $@
 
-spectrogram: spectrogram.o
-	$(CXX) spectrogram.o -o $@
+spectrogram_example: spectrogram_example.o
+	$(CXX) spectrogram_example.o -o $@
 
-test: test.o
-	$(CXX) test.o -o $@
+test_complex: test_complex.o
+	$(CXX) test_complex.o -o $@
 
 test_fft: test_fft.o
 	$(CXX) test_fft.o -o $@
 
 
-fft.o: $(EXA_DIR)/fft.cpp $(INC_DIR)/complex.hpp $(INC_DIR)/fft.hpp $(INC_DIR)/wav.hpp $(INC_DIR)/window.hpp $(INC_DIR)/assert.hpp $(INC_DIR)/random.hpp $(INC_DIR)/constants.hpp
-	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $(EXA_DIR)/fft.cpp
-
 window.o: $(EXA_DIR)/window.cpp $(INC_DIR)/complex.hpp $(INC_DIR)/window.hpp $(INC_DIR)/constants.hpp
 	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $(EXA_DIR)/window.cpp
 
-filter_and_scale.o: $(EXA_DIR)/filter_and_scale.cpp $(INC_DIR)/complex.hpp $(INC_DIR)/fft.hpp $(INC_DIR)/wav.hpp
-	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $(EXA_DIR)/filter_and_scale.cpp
+fft_example.o: $(EXA_DIR)/fft_example.cpp $(INC_DIR)/complex.hpp $(INC_DIR)/fft.hpp $(INC_DIR)/wav.hpp $(INC_DIR)/window.hpp $(INC_DIR)/assert.hpp $(INC_DIR)/random.hpp $(INC_DIR)/constants.hpp
+	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $(EXA_DIR)/fft_example.cpp
 
-modulation.o: $(EXA_DIR)/modulation.cpp $(INC_DIR)/complex.hpp $(INC_DIR)/fft.hpp $(INC_DIR)/wav.hpp $(INC_DIR)/constants.hpp
-	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $(EXA_DIR)/modulation.cpp
+filter_example.o: $(EXA_DIR)/filter_example.cpp $(INC_DIR)/complex.hpp $(INC_DIR)/fft.hpp $(INC_DIR)/wav.hpp
+	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $(EXA_DIR)/filter_example.cpp
 
-spectrogram.o: $(EXA_DIR)/spectrogram.cpp $(INC_DIR)/complex.hpp $(INC_DIR)/constants.hpp
-	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $(EXA_DIR)/spectrogram.cpp
+modulation_example.o: $(EXA_DIR)/modulation_example.cpp $(INC_DIR)/complex.hpp $(INC_DIR)/fft.hpp $(INC_DIR)/wav.hpp $(INC_DIR)/constants.hpp
+	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $(EXA_DIR)/modulation_example.cpp
 
-test.o: $(TES_DIR)/test.cpp $(INC_DIR)/complex.hpp $(INC_DIR)/assert.hpp $(INC_DIR)/random.hpp
-	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $(TES_DIR)/test.cpp
+spectrogram_example.o: $(EXA_DIR)/spectrogram_example.cpp $(INC_DIR)/complex.hpp $(INC_DIR)/constants.hpp
+	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $(EXA_DIR)/spectrogram_example.cpp
+
+test_complex.o: $(TES_DIR)/test_complex.cpp $(INC_DIR)/complex.hpp $(INC_DIR)/assert.hpp $(INC_DIR)/random.hpp
+	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $(TES_DIR)/test_complex.cpp
 
 test_fft.o: $(TES_DIR)/test_fft.cpp $(EXA_DIR)/fft.cpp $(INC_DIR)/complex.hpp $(INC_DIR)/fft.hpp $(INC_DIR)/assert.hpp $(INC_DIR)/random.hpp
 	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $(TES_DIR)/test_fft.cpp
@@ -50,5 +50,5 @@ test_fft.o: $(TES_DIR)/test_fft.cpp $(EXA_DIR)/fft.cpp $(INC_DIR)/complex.hpp $(
 
 clean:
 	rm -f *.o
-	rm -f fft window filter modulation spectrogram
-	rm -f test test_fft
+	rm -f fft_example filter_example modulation_example spectrogram_example
+	rm -f test_complex test_fft
