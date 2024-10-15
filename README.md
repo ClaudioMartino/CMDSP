@@ -13,13 +13,13 @@ The default FFT size is 1024 and the default radix size is 2. The FFT size must 
 * Add the `-f` option to use a `.wav` file as input. Only PCM-modulated audios with 1 channel are supported.
 * Add the `-s` option to save the signal in the time domain and its spectrum in `.txt` files.
 * Add the `-b` option to measure the execution time with the [chrono library](https://en.cppreference.com/w/cpp/chrono). The FFTs are run 99 times and the medians are taken. The measurements on the Apple M1 are the following:
-![FFT benchmarks](Examples/fft_bench.png)
+![FFT benchmarks](Docs/fft_bench.png)
 
 You can plot the signal saved in the `.txt` files using `plot.py`. You will need [matplotlib](https://matplotlib.org/).
 ```
 python3 plot.py [sample_freq]
 ```
-![FFT plots](Examples/fft_example.png)
+![FFT plots](Docs/fft_example.png)
 
 ### Filter
 A band-pass filter has been implemented. To build and run it:
@@ -59,7 +59,7 @@ python3 spectrogram.py [-fs sample-frequency] [-t1 time1] [-t2 time2] [-f1 freq1
 * Define the frequency interval with the `-f1` and `-f2` options.
 * Define the interpolation type with the `-i` option.
 * Define the number of axis ticks with the `-nt` and `-nf` options.
-![Spectrogram example](Examples/spectrogram_example.png)
+![Spectrogram example](Docs/spectrogram_example.png)
 
 ## Test
 ### Complex
