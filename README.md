@@ -17,7 +17,7 @@ The default FFT size is 1024 and the default radix size is 2. The FFT size must 
 
 You can plot the signal saved in the `.txt` files using the Python3 script `plot.py`. You will need [matplotlib](https://matplotlib.org/).
 ```
-./plot.py [sample_freq]
+./plot.py [-fs sample-freq]
 ```
 ![FFT plots](doc/fft_example.png)
 

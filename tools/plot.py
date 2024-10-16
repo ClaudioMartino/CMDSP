@@ -2,6 +2,7 @@
 
 #usage plot.py [sample_freq]
 
+import argparse
 import matplotlib.pyplot as plt
 import math 
 import sys
@@ -27,14 +28,16 @@ def convert(x):
 
 # MAIN
 
-cur_dir = '/'.join((__file__.split('/'))[0:-1])
+parser = argparse.ArgumentParser(prog='plot')
+parser.add_argument('-fs', default=1, help="Sample frequency (default: 1)")
+args = parser.parse_args()
 
-sample_freq = 1
-if len(sys.argv) >= 2:
-  sample_freq = int(sys.argv[1])
+sample_freq = int(args.fs)
 print("Sampling freq.: " + str(sample_freq))
 
 # Read signals from files
+cur_dir = '/'.join((__file__.split('/'))[0:-1])
+
 x_file = open(cur_dir + "/time.txt", "r")
 x = x_file.readlines()
 x_r, x_i = convert(x)
@@ -60,18 +63,18 @@ fig, axs = plt.subplots(2,2)
 
 axs[0][0].plot(time, x_r)
 axs[0][0].set_title('Re(x[n])')
-axs[0][0].set(xlabel='s')
+axs[0][0].set(xlabel='Time (s)')
 
 axs[0][1].plot(time, x_i)
 axs[0][1].set_title('Im(x[n])')
-axs[0][1].set(xlabel='s')
+axs[0][1].set(xlabel='Time (s)')
 
 axs[1][0].plot(freq, y_r)
 axs[1][0].set_title('Re(y[n])')
-axs[1][0].set(xlabel='Hz')
+axs[1][0].set(xlabel='Frequency (Hz)')
 
 axs[1][1].plot(freq, y_i)
 axs[1][1].set_title('Im(y[n])')
-axs[1][1].set(xlabel='Hz')
+axs[1][1].set(xlabel='Frequency (Hz)')
 
 plt.show()
