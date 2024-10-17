@@ -101,7 +101,10 @@ int main(int argc, char** argv) {
   std::ofstream fso("modulated.wav", std::ios::binary);
   write_wav_header(fso, header);
   long size_of_each_sample = (header.num_channels * header.bits_per_sample) / 8;
-  write_pcm_wav_data<double>(fso, header, N, size_of_each_sample, x);
+  std::vector<double> real_x(N);
+  for(size_t i=0; i<N; i++)
+    real_x[i] = real(x[i]);
+  write_pcm_wav_data<double>(fso, header, N, size_of_each_sample, real_x);
   fso.close();
 
   // Save time signal
