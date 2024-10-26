@@ -5,8 +5,6 @@
 #include <fstream>
 
 #include "complex.hpp"
-#include "assert.hpp"
-#include "random.hpp"
 #include "constants.hpp"
 
 template <typename T>

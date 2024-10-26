@@ -1,4 +1,6 @@
 #include "fft.hpp"
+#include "assert.hpp"
+#include "random.hpp"
 
 int main() {
   std::vector<size_t> Nvec = {8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096};

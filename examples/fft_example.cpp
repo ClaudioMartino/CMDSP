@@ -1,6 +1,7 @@
 #include "fft.hpp"
 #include "wav.hpp"
 #include "window.hpp"
+#include "random.hpp"
 
 int main(int argc, char** argv) {
   // Default values

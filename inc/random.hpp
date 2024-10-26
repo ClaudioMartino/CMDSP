@@ -1,3 +1,5 @@
+#include "complex.hpp"
+
 template <typename T>
 T real_rand() {
   // Generate a random value between 10 and 100
