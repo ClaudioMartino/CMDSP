@@ -4,10 +4,8 @@
 #include <iostream>
 
 #include "matrix.hpp"
-#include "assert.hpp"
 #include "random.hpp"
-
-#define INVSQRT2 0.707106781186548
+#include "constants.hpp"
 
 Matrix<double> walsh_hadamard_matrix(size_t N) {
   // H1  

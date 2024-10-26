@@ -1,4 +1,3 @@
-#include <getopt.h>
 #include <vector>
 #include <cmath>
 #include <chrono>
