@@ -6,7 +6,7 @@ EXA_DIR = examples
 
 CXXFLAGS = -std=c++20
 
-EXAMPLES = fft_example filter_example modulation_example spectrogram_example hadamard_example
+EXAMPLES = fft_example filter_example modulation_example spectrogram_example hadamard_example netpbm_example
 TESTS = test_complex test_fft test_fast_hadamard
 
 all: $(EXAMPLES) $(TESTS)
@@ -29,6 +29,9 @@ spectrogram_example: spectrogram_example.o
 	$(CXX) $< -o $@
 
 hadamard_example: hadamard_example.o
+	$(CXX) $< -o $@
+
+netpbm_example: netpbm_example.o
 	$(CXX) $< -o $@
 
 test_complex: test_complex.o
@@ -54,6 +57,9 @@ spectrogram_example.o: $(EXA_DIR)/spectrogram_example.cpp $(INC_DIR)/complex.hpp
 	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $<
 
 hadamard_example.o: $(EXA_DIR)/hadamard_example.cpp $(INC_DIR)/hadamard.hpp $(INC_DIR)/matrix.hpp
+	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $<
+
+netpbm_example.o: $(EXA_DIR)/netpbm_example.cpp $(INC_DIR)/netpbm.hpp
 	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $<
 
 # Tests
