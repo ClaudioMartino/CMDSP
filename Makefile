@@ -37,6 +37,9 @@ netpbm_example: netpbm_example.o
 huffman_example: huffman_example.o
 	$(CXX) $< -o $@
 
+dct_example: dct_example.o
+	$(CXX) $< -o $@
+
 test_complex: test_complex.o
 	$(CXX) $< -o $@
 
@@ -66,6 +69,9 @@ netpbm_example.o: $(EXA_DIR)/netpbm_example.cpp $(INC_DIR)/netpbm.hpp
 	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $<
 
 huffman_example.o: $(EXA_DIR)/huffman_example.cpp
+	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $<
+
+dct_example.o: $(EXA_DIR)/dct_example.cpp $(INC_DIR)/dct.hpp
 	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $<
 
 # Tests
